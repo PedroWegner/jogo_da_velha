@@ -1,3 +1,5 @@
+from random import randint
+
 class JogoDaVelha:
     def __init__(self):
         self._tabuleiro = []
@@ -16,7 +18,7 @@ class JogoDaVelha:
             print()
 
     def escolhe_jogador(self):
-        return 0
+        return randint(0, 1)
 
     def troca_jogador(self, jogador):
         return 'X' if jogador == 'O' else 'O'
@@ -24,16 +26,33 @@ class JogoDaVelha:
     def escolhe_espaco(self, linha, coluna, jogador):
         self._tabuleiro[linha][coluna] = jogador
 
-    # def jogador_ganha(self, jogador):
-    #     win = None
-    #
-    #     tab = len(self._tabuleiro)
-    #
-    #     for i in range(tab):
-    #         for j in range(tab):
-    #             if self._tabuleiro[i][j] != jogador:
-    #                 win = False
-    #                 break
+    def jogador_ganha(self, jogador):
+        ganhou = None
+
+        tab = len(self._tabuleiro)
+        print(tab)
+
+        # checa linhas
+        for linha in range(tab):
+            win = True
+            for coluna in range(tab):
+                if self._tabuleiro[linha][coluna] != jogador:
+                    win = False
+                    break
+            if win:
+                return win
+
+        # checa coluna
+        for linha in range(tab):
+            win = True
+            for coluna in range(tab):
+                if self._tabuleiro[coluna][linha] != jogador:
+                    win = False
+                    break
+            if win:
+                return win
+
+
 
     def verifica_espaco(self):
         for linha in self._tabuleiro:
@@ -54,4 +73,9 @@ class JogoDaVelha:
                 linha, coluna = list(map(int, input('escolha uma linha e uma coluna: ')))
 
             self.escolhe_espaco(linha - 1, coluna - 1, jogador)
+
+            if self.jogador_ganha(jogador):
+                print(f'{jogador} ganhou')
             jogador = self.troca_jogador(jogador)
+
+            self.jogador_ganha(jogador)
