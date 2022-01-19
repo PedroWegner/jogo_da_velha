@@ -9,7 +9,7 @@ class JogoDaVelha:
                 self._linha.append('-')
             self._tabuleiro.append(self._linha)
 
-    def print_tab(self):
+    def exibe_tabuleiro(self):
         for linha in self._tabuleiro:
             for espaco in linha:
                 print(espaco, end='')
@@ -17,6 +17,9 @@ class JogoDaVelha:
 
     def escolhe_jogador(self):
         return 0
+
+    def troca_jogador(self, jogador):
+        return 'X' if jogador == 'O' else 'O'
 
     def escolhe_espaco(self, linha, coluna, jogador):
         self._tabuleiro[linha][coluna] = jogador
@@ -41,3 +44,14 @@ class JogoDaVelha:
 
     def iniciar_jogo(self):
         self.cria_tabuleiro()  # cria o tabuleiro
+        jogador = 'O' if self.escolhe_jogador() == 1 else 'X'
+        while True:
+            self.exibe_tabuleiro()
+
+            linha, coluna = list(map(int, input('escolha uma linha e uma coluna: ')))
+            while linha > 3 or coluna > 3 or linha < 1 or coluna < 1:
+                print('numero de linha ou coluna inválido, digite novamente')
+                linha, coluna = list(map(int, input('escolha uma linha e uma coluna: ')))
+
+            self.escolhe_espaco(linha - 1, coluna - 1, jogador)
+            jogador = self.troca_jogador(jogador)
